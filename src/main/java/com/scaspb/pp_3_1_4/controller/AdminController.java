@@ -1,16 +1,23 @@
-package ru.kata.spring.boot_security.demo.controller;
+package com.scaspb.pp_3_1_4.controller;
 
+import com.scaspb.pp_3_1_4.exception_handling.NoSuchEmployeeException;
+import com.scaspb.pp_3_1_4.model.Employee;
+import com.scaspb.pp_3_1_4.model.Role;
+import com.scaspb.pp_3_1_4.service.EmployeeService;
+import com.scaspb.pp_3_1_4.service.RoleService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Employee;
-import ru.kata.spring.boot_security.demo.service.EmployeeService;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 
-@Controller
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
+import java.util.Set;
+
+@RestController
 @PreAuthorize("ADMIN")
-@RequestMapping("/admin")
+@RequestMapping("/api")
 public class AdminController {
 
     private final EmployeeService employeeService;
@@ -21,43 +28,42 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping()
-    public String showAllEmployees(Model model) {
-        model.addAttribute("allEmps", employeeService.getAllEmployees());
-        return "all-employees";
+    @GetMapping("/admin")
+    public ResponseEntity<List<Employee>> showAdminPage() {
+        return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
     }
 
-    @GetMapping("/addNewEmployee")
-    public String addNewEmployee(Model model) {
-        model.addAttribute("employee", new Employee());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "employee-info";
-    }
-
-    @PostMapping(value = "/saveEmployee")
-    public String saveEmployee(@ModelAttribute("employee") Employee employee,
-                               @RequestParam(value = "nameRole", required = false) String nameRole) {
-        employee.setRoles(roleService.getByName(nameRole));
+    @PostMapping("/admin")
+    public ResponseEntity<Void> createEmployee(@Valid @RequestBody Employee employee) {
         employeeService.saveEmployee(employee);
-        return "redirect:/admin";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/updateInfo")
-    public String updateEmployee(@RequestParam("empID") int id, Model model) {
-        if(employeeService.getEmployee(id) == null){
-            return "redirect:/admin";
-        }
-        model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("employee", employeeService.getEmployee(id));
-        return "employee-info";
+    @PutMapping(value = "/admin")
+    public ResponseEntity<Void> updateEmployee(@Valid @RequestBody Employee employee, @PathVariable int id) {
+        employeeService.saveEmployee(employee);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/deleteEmployee")
-    public String deleteEmployee(@RequestParam("empID") int id) {
-        if(employeeService.getEmployee(id) == null){
-            return "redirect:/admin";
+    @DeleteMapping("/deleteEmployee/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable int id) {
+        if (employeeService.getEmployee(id) == null) {
+            throw new NoSuchEmployeeException("There is no employee with ID = " +
+                    id + " int Database");
         }
         employeeService.deleteEmployee(id);
-        return "redirect:/admin";
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<Set<Role>> getAllRoles() {
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/header")
+    public ResponseEntity<Employee> getAuthentication(Principal principal) {
+        Employee employee = employeeService.findByLogin(principal.getName());
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 }

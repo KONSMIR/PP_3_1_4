@@ -3,16 +3,16 @@ const urlForHeader = '/api/header'
 const urlForRoles = '/api/roles'
 const header = document.getElementById('header')
 const headerRoles = document.getElementById('headerRoles')
-const usersTable = document.querySelector('#navTab a:first-child')
-const newUsersTable = bootstrap.Tab.getOrCreateInstance(usersTable)
+const employeesTable = document.querySelector('#navTab a:first-child')
+const newEmployeesTable = bootstrap.Tab.getOrCreateInstance(employeesTable)
 const tbody = document.querySelector('tbody')
 
-const newUser = document.getElementById('newUser')
+const newEmployee = document.getElementById('newEmployee')
 const name = document.getElementById('addName')
 const surname = document.getElementById('addSurname')
-const age = document.getElementById('addAge')
-const email = document.getElementById('addEmail')
-const username = document.getElementById('addUsername')
+const department = document.getElementById('addDepartment')
+const salary = document.getElementById('addSalary')
+const login = document.getElementById('addLogin')
 const password = document.getElementById('addPassword')
 const roles = document.getElementById('addRole')
 
@@ -21,9 +21,9 @@ const newDeleteModal = bootstrap.Modal.getOrCreateInstance(deleteModal)
 const deleteId = document.getElementById('deleteId')
 const deleteName = document.getElementById('deleteName')
 const deleteSurname = document.getElementById('deleteSurname')
-const deleteAge = document.getElementById('deleteAge')
-const deleteEmail = document.getElementById('deleteEmail')
-const deleteUsername = document.getElementById('deleteUsername')
+const deleteDepartment = document.getElementById('deleteDepartment')
+const deleteSalary = document.getElementById('deleteSalary')
+const deleteLogin = document.getElementById('deleteLogin')
 const deleteRole = document.getElementById('deleteRole')
 
 const editModal = document.getElementById('editModal')
@@ -31,18 +31,18 @@ const newEditModal = bootstrap.Modal.getOrCreateInstance(editModal)
 const editId = document.getElementById('editId')
 const editName = document.getElementById('editName')
 const editSurname = document.getElementById('editSurname')
-const editAge = document.getElementById('editAge')
-const editEmail = document.getElementById('editEmail')
-const editUsername = document.getElementById('editUsername')
+const editDepartment = document.getElementById('editDepartment')
+const editSalary = document.getElementById('editSalary')
+const editLogin = document.getElementById('editLogin')
 const editPassword = document.getElementById('editPassword')
 const editRole = document.getElementById('editRole')
 
 function getAuthentication() {
     fetch(urlForHeader)
         .then(response => response.json())
-        .then(user => {
-            const text = user.username
-            const text2 = ' with roles: ' + user.roles.map(r => r.name)
+        .then(employee => {
+            const text = employee.login
+            const text2 = ' with roles: ' + employee.roles.map(r => r.name)
             header.innerHTML = text
             headerRoles.innerHTML = text2
         })
@@ -52,19 +52,19 @@ getAuthentication()
 
 
 let result = ''
-const showUsersTable = () => {
+const showEmployeesTable = () => {
     fetch(url)
         .then(response => response.json())
-        .then(users => {
-            users.forEach(user => {
+        .then(employees => {
+            employees.forEach(employee => {
                 result += `<tr>
-                            <td>${user.id}</td>
-                            <td>${user.name}</td>
-                            <td>${user.surname}</td>
-                            <td>${user.age}</td>
-                            <td>${user.email}</td>
-                            <td>${user.username}</td>
-                            <td>${user.roles.map(r => r.name)}</td>
+                            <td>${employee.id}</td>
+                            <td>${employee.name}</td>
+                            <td>${employee.surname}</td>
+                            <td>${employee.department}</td>
+                            <td>${employee.salary}</td>
+                            <td>${employee.login}</td>
+                            <td>${employee.roles.map(r => r.name)}</td>
                             <td><button type="submit" class="btnEdit btn btn-primary" 
                                 data-bs-toggle="modal" data-bs-target="#editModal">Edit</button></td>
                             <td><button type="submit" class="btnDel btn btn-danger" 
@@ -77,7 +77,7 @@ const showUsersTable = () => {
 
 fetch(url)
     .then(response => response.json())
-    .then(data => showUsersTable(data))
+    .then(data => showEmployeesTable(data))
     .catch(error => console.log(error))
 
 function getAllRoles(target) {
@@ -103,12 +103,12 @@ let roleArray = (options) => {
     return array;
 }
 
-const refreshUsersTable = () => {
+const refreshEmployeesTable = () => {
     fetch(url)
         .then(response => response.json())
         .then(data => {
             result = ''
-            showUsersTable(data)
+            showEmployeesTable(data)
         })
 }
 
@@ -127,9 +127,9 @@ on(document, 'click', '.btnEdit', e => {
     editId.value = target.children[0].innerHTML
     editName.value = target.children[1].innerHTML
     editSurname.value = target.children[2].innerHTML
-    editAge.value = target.children[3].innerHTML
-    editEmail.value = target.children[4].innerHTML
-    editUsername.value = target.children[5].innerHTML
+    editDepartment.value = target.children[3].innerHTML
+    editSalary.value = target.children[4].innerHTML
+    editLogin.value = target.children[5].innerHTML
     editPassword.value = ''
     editRole.value = getAllRoles(editRole)
 })
@@ -143,16 +143,16 @@ editModal.addEventListener('submit', (e) => {
             id: editId.value,
             name: editName.value,
             surname: editSurname.value,
-            age: editAge.value,
-            email: editEmail.value,
-            username: editUsername.value,
+            department: editDepartment.value,
+            salary: editSalary.value,
+            login: editLogin.value,
             password: editPassword.value,
             roles: setRoles
         })
     })
-        .then(data => showUsersTable(data))
+        .then(data => showEmployeesTable(data))
         .catch(error => console.log(error))
-        .then(refreshUsersTable)
+        .then(refreshEmployeesTable)
     newEditModal.hide()
 })
 
@@ -163,9 +163,9 @@ on(document, 'click', '.btnDel', e => {
     deleteId.value = target.children[0].innerHTML
     deleteName.value = target.children[1].innerHTML
     deleteSurname.value = target.children[2].innerHTML
-    deleteAge.value = target.children[3].innerHTML
-    deleteEmail.value = target.children[4].innerHTML
-    deleteUsername.value = target.children[5].innerHTML
+    deleteDepartment.value = target.children[3].innerHTML
+    deleteSalary.value = target.children[4].innerHTML
+    deleteLogin.value = target.children[5].innerHTML
     deleteRole.value = getAllRoles(deleteRole)
 })
 
@@ -174,15 +174,15 @@ deleteModal.addEventListener('submit', (e) => {
     fetch(url + `/${id}`, {
         method: 'DELETE',
     })
-        .then(data => showUsersTable(data))
+        .then(data => showEmployeesTable(data))
         .catch(error => console.log(error))
-        .then(refreshUsersTable)
+        .then(refreshEmployeesTable)
     newDeleteModal.hide()
 })
 
 
 getAllRoles(roles)
-newUser.addEventListener('submit', (e) => {
+newEmployee.addEventListener('submit', (e) => {
     e.preventDefault()
     let options = document.querySelector('#addRole');
     let setRoles = roleArray(options)
@@ -190,22 +190,22 @@ newUser.addEventListener('submit', (e) => {
         method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
             name: name.value,
             surname: surname.value,
-            age: age.value,
-            email: email.value,
-            username: username.value,
+            department: department.value,
+            salary: salary.value,
+            login: login.value,
             password: password.value,
             roles: setRoles
         })
     })
-        .then(data => showUsersTable(data))
+        .then(data => showEmployeesTable(data))
         .catch(error => console.log(error))
-        .then(refreshUsersTable)
-    newUsersTable.show()
+        .then(refreshEmployeesTable)
+    newEmployeesTable.show()
     name.value = ''
     surname.value = ''
-    age.value = ''
-    email.value = ''
-    username.value = ''
+    department.value = ''
+    salary.value = ''
+    login.value = ''
     password.value = ''
     roles.value = ''
 })

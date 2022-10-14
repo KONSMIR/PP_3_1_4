@@ -1,4 +1,4 @@
-package com.scaspb.rest.exception_handling;
+package com.scaspb.pp_3_1_4.exception_handling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

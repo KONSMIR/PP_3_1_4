@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.model;
+package com.scaspb.pp_3_1_4.model;
 
 
 import javax.persistence.*;

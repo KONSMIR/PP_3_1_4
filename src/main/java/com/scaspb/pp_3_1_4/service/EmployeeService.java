@@ -1,8 +1,8 @@
-package ru.kata.spring.boot_security.demo.service;
+package com.scaspb.pp_3_1_4.service;
 
 
+import com.scaspb.pp_3_1_4.model.Employee;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.kata.spring.boot_security.demo.model.Employee;
 
 import java.util.List;
 

@@ -1,12 +1,14 @@
-package ru.kata.spring.boot_security.demo.service;
+package com.scaspb.pp_3_1_4.service;
 
-import ru.kata.spring.boot_security.demo.model.Role;
+
+import com.scaspb.pp_3_1_4.model.Role;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface RoleService {
 
-    public Collection<Role> getAllRoles();
+    public Set<Role> getAllRoles();
 
     public Collection<Role> getByName(String name);
 }

@@ -1,32 +1,32 @@
-const url = '/api/user'
+const url = '/api/employee'
 const urlHeader = '/api/header'
 const header = document.getElementById('header')
 const headerRoles = document.getElementById('headerRoles')
 const tBody = document.querySelector('tbody')
 let result = ''
 
-function getAuthenticationForUserPage() {
+function getAuthenticationForEmployeePage() {
     fetch(urlHeader)
         .then(response => response.json())
-        .then(user => {
-            const text = user.username
-            const text2 = ' with roles: ' + user.roles.map(r => r.name)
+        .then(employee => {
+            const text = employee.login
+            const text2 = ' with roles: ' + employee.roles.map(r => r.name)
             header.innerHTML = text
             headerRoles.innerHTML = text2
         })
 }
 
-getAuthenticationForUserPage()
+getAuthenticationForEmployeePage()
 
-const showTable = (user) => {
+const showTable = (employee) => {
     result += `<tr>
-        <td>${user.id}</td>   
-        <td>${user.name}</td>
-        <td>${user.surname}</td>
-        <td>${user.age}</td>
-        <td>${user.email}</td>
-        <td>${user.username}</td>
-        <td>${user.roles.map(r => r.name)}</td>
+        <td>${employee.id}</td>   
+        <td>${employee.name}</td>
+        <td>${employee.surname}</td>
+        <td>${employee.department}</td>
+        <td>${employee.salary}</td>
+        <td>${employee.login}</td>
+        <td>${employee.roles.map(r => r.name)}</td>
         </tr>`
     tBody.innerHTML = result
 }

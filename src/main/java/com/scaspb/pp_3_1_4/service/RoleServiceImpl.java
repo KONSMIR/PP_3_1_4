@@ -1,11 +1,13 @@
-package ru.kata.spring.boot_security.demo.service;
+package com.scaspb.pp_3_1_4.service;
 
+import com.scaspb.pp_3_1_4.model.Role;
+import com.scaspb.pp_3_1_4.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements RoleService{
@@ -14,8 +16,8 @@ public class RoleServiceImpl implements RoleService{
     private RoleRepository roleRepository;
 
     @Override
-    public Collection<Role> getAllRoles() {
-        Collection<Role> roles = roleRepository.findAll();
+    public Set<Role> getAllRoles() {
+        Set<Role> roles = (Set<Role>) roleRepository.findAll();
         return roles;
     }
 

@@ -1,7 +1,8 @@
-package ru.kata.spring.boot_security.demo.repository;
+package com.scaspb.pp_3_1_4.repository;
 
+
+import com.scaspb.pp_3_1_4.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.kata.spring.boot_security.demo.model.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     public Employee findByLogin(String login);
