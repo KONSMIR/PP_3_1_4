@@ -40,12 +40,12 @@ public class AdminController {
     }
 
     @PutMapping(value = "/admin")
-    public ResponseEntity<Void> updateEmployee(@Valid @RequestBody Employee employee, @PathVariable int id) {
+    public ResponseEntity<Void> updateEmployee(@Valid @RequestBody Employee employee) {
         employeeService.saveEmployee(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteEmployee/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable int id) {
         if (employeeService.getEmployee(id) == null) {
             throw new NoSuchEmployeeException("There is no employee with ID = " +
@@ -57,7 +57,8 @@ public class AdminController {
 
     @GetMapping("/roles")
     public ResponseEntity<Set<Role>> getAllRoles() {
-        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+        Set<Role> roles = Set.copyOf(roleService.getAllRoles());
+        return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
 

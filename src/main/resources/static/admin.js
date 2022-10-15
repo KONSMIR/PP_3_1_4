@@ -138,7 +138,7 @@ editModal.addEventListener('submit', (e) => {
     e.preventDefault()
     let options = document.querySelector('#editRole');
     let setRoles = roleArray(options)
-    fetch(url + `/${id}`, {
+    fetch(url, {
         method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
             id: editId.value,
             name: editName.value,
